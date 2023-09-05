@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fixed Width Pop-up Sequence</title>
+<style>
+    * {
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+        transition: 0.5s ease-in-out;
+    }
+  body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #f2f2f2;
+  }
+  .popup {
+    display: none;
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-width: 400px; /* Độ rộng cố định */
+    width: 100%; /* Đảm bảo rộng 100% để tránh tràn qua biên */
+  }
+  .btn-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+  }
+  .btn {
+    padding: 5px 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+  }
+</style>
+</head>
+<body>
+<div class="popup" id="popup1">
+  <h2>Pop-up 1</h2>
+  <p id="text1"></p>
+  <div class="btn-container">
+    <button class="btn" id="nextBtn1">Next</button>
+  </div>
+</div>
+<div class="popup" id="popup2">
+  <h2>Pop-up 2</h2>
+  <p id="text2"></p>
+  <div class="btn-container">
+    <button class="btn" id="nextBtn2">Next</button>
+  </div>
+</div>
+<div class="popup" id="popup3">
+  <h2>Pop-up 3</h2>
+  <p id="text3"></p>
+  <div class="btn-container">
+    <button class="btn" id="nextBtn3">Next</button>
+  </div>
+</div>
+<div class="popup" id="popup4">
+  <h2>Pop-up 4</h2>
+  <p id="text4"></p>
+  <div class="btn-container">
+    <button class="btn" id="nextBtn4">Next</button>
+  </div>
+</div>
+<script>
+  const popups = document.querySelectorAll('.popup');
+  const nextButtons = document.querySelectorAll('.btn');
+  const texts = [
+    "This is the first pop-up.",
+    "This is the second pop-up.",
+    "This is the third pop-up.",
+    "This is the fourth pop-up."
+  ];
+
+  function typeText(element, text, interval) {
+    let index = 0;
+    const intervalId = setInterval(() => {
+      element.textContent += text[index];
+      index++;
+      if (index === text.length) {
+        clearInterval(intervalId);
+      }
+    }, interval);
+  }
+
+  function showPopup(index) {
+    if (index < popups.length) {
+      setTimeout(() => {
+        popups[index].style.display = 'block';
+        typeText(document.getElementById(`text${index + 1}`), texts[index], 100);
+
+        nextButtons[index].addEventListener('click', () => {
+          popups[index].style.display = 'none';
+          setTimeout(() => {
+            showPopup(index + 1);
+          }, 1000); // Thời gian độ trễ giữa các pop-up
+        });
+      },1000); // Thời gian độ trễ giữa các pop-up
+    }
+  }
+
+  showPopup(0);
+</script>
+</body>
+</html>

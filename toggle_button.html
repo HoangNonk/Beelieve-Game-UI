@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        .switch_toggle_audio {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+
+        .switch_toggle_audio input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider_button_audio {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+
+        .slider_button_audio:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+
+        input:checked+.slider_button_audio {
+            background-color: #2196F3;
+        }
+
+        input:focus+.slider_button_audio {
+            box-shadow: 0 0 1px #2196F3;
+        }
+
+        input:checked+.slider_button_audio:before {
+            -webkit-transform: translateX(26px);
+            -ms-transform: translateX(26px);
+            transform: translateX(26px);
+        }
+
+        .slider_button_audio.round {
+            border-radius: 34px;
+        }
+
+        .slider_button_audio.round:before {
+            border-radius: 50%;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h2>Toggle Switch_toggle_audio</h2>
+
+    <audio id="myAudio" src="../audio/music_background/music game.mp3" autoplay loop></audio>
+
+    <label class="switch_toggle_audio">
+        <input onclick="toggleAudio()" type="checkbox" checked>
+        <span class="slider_button_audio round"></span>
+    </label>
+
+
+    <script>
+        var audio = document.getElementById('myAudio');
+        var isAudioStopped = false;
+
+        audio.play();
+        // Đảm bảo rằng âm thanh đã được tải sẵn
+
+
+        document.addEventListener('DOMContentLoaded', function () {
+            if (isAudioStopped) {
+                audio.pause();
+                audio.currentTime = 0; // Đặt thời gian về đầu khi bật lại âm thanh
+                console.log('stopped');
+            } else {
+                audio.play();
+            }
+        });
+
+        // Hàm để bật/tắt lặp lại và điều khiển âm thanh
+        function toggleAudio() {
+            if (audio.paused) {
+                isAudioStopped = false;
+                audio.play();
+            } else {
+                isAudioStopped = true;
+                audio.pause();
+            }
+        }
+    </script>
+
+
+</body>
+
+</html>

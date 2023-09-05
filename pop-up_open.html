@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Hiển thị div khi nhấp vào li</title>
+    <style>
+        /* Ẩn tất cả các div ban đầu */
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <ul id="itemList">
+        <!-- Danh sách sẽ được tạo ra bằng JavaScript -->
+    </ul>
+
+    <div id="div1" class="hidden">Nội dung cho Item 1</div>
+    <div id="div2" class="hidden">Nội dung cho Item 2</div>
+    <div id="div3" class="hidden">Nội dung cho Item 3</div>
+    <div id="div4" class="hidden">Nội dung cho Item 4</div>
+    <div id="div5" class="hidden">Nội dung cho Item 5</div>
+
+    <script>
+        const items = ["Item 1", "Item 2", "Item 3", "Item 4", "Item 5"];
+        const itemList = document.getElementById("itemList");
+
+        items.map((item, index) => {
+            const li = document.createElement("li");
+            li.textContent = item;
+            li.addEventListener("click", () => {
+                // Ẩn tất cả các div
+                const divs = document.querySelectorAll(".hidden");
+                divs.forEach((div) => {
+                    div.style.display = "none";
+                });
+
+                // Hiển thị div tương ứng với mục được nhấp vào
+                document.getElementById("div" + (index + 1)).style.display = "block";
+            });
+            itemList.appendChild(li);
+        });
+    </script>
+</body>
+</html>

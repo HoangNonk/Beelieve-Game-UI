@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+    integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"/>
+
+</head>
+
+<body>
+    <div id="metamask" class="w-100 h-100 d-flex justify-content-center align-items-center">
+        <div class="d-flex flex-column justify-content-center align-items-center bg-body-secondary p-5 rounded-4">
+            <h4 id="status_wallet">Connect to Metamask Wallet here !</h4>
+            <p id="loginMetamask" class="p-3 border-0" style="background-color: #353535; border-radius: 50%;"><img
+                    id="logo_status_metamask" width="40px" src="../img/metamask.png" alt=""></p>
+        </div>
+    </div>
+
+    <script>
+        let metamaskAvailabel = true
+let title_metamask = document.getElementById('status_wallet')
+let logo_status_meta = document.getElementById('logo_status_meta')
+
+document.addEventListener("DOMContentLoaded", async () => {
+    const loginButton = document.getElementById("loginMetamask");
+
+    // loginButton.prevenDefault();
+
+    loginButton.addEventListener("click", async () => {
+        if (typeof window.ethereum !== "undefined") {
+            try {
+                await window.ethereum.enable();
+                const web3 = new Web3(window.ethereum); 
+                const accounts = await web3.eth.getAccounts();
+
+                if (accounts.length > 0) {
+                    title_metamask.innerText = "Đăng nhập thành công với địa chỉ: " + accounts[0];
+                    console.log(title_metamask);
+                }
+            } catch (error) {
+                console.error(error);
+                alert("Lỗi khi đăng nhập với Metamask!");
+                console.log(title_metamask);
+                alert("Vui lòng cài đặt Metamask và kết nối ví trước khi đăng nhập. Bạn có thể tải Metamask từ đường dẫn https://metamask.io/");
+            }
+        } else {
+            title_metamask.innerText = "You have not install Metamask yet !"
+            // logo_status_meta.src = ""
+            loginButton.onclick = () => {
+                window.location.href = "https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn"
+            }
+        }
+    });
+});
+    </script>
+</body>
+
+</html>

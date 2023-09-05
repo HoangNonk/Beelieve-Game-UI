@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Q&A History</title>
+  <link rel="shortcut icon" href="../img/chapter.png" type="image/x-icon">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+    integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <link rel="stylesheet" href="style.css">
+  <script defer src="script.js"></script>
+  <script defer src="metamask.js"></script>
+</head>
+
+<body>
+  <!-- Map từng chapter , phủ full screen  -->
+  <div id="map" class="d-flex justify-content-between align-items-center h-100 w-100" style="position:relative">
+    <div class="chapter spot" style="position: absolute; top: 50%; left: 20%;">
+      <img class="" width="100px" src="../img/spot_chapter.png" alt="">
+    </div>
+
+    <div class="chapter spot" style="position: absolute; top: 40%; left: 35%;">
+      <img class="" width="100px" src="../img/spot_chapter.png" alt="">
+    </div>
+
+    <div class="chapter spot" style="position: absolute; top: 60%; left: 50%;">
+      <img class="" width="100px" src="../img/spot_chapter.png" alt="">
+    </div>
+
+    <div class="chapter spot" style="position: absolute; top: 70%; right: 30%;">
+      <img class="" width="100px" src="../img/spot_chapter.png" alt="">
+    </div>
+
+    <div class="chest postition-absolute"
+      style="position: absolute; top: 30%; right: 15%; background: url('../img/treasure.png') no-repeat; background-size: cover; height: 100px; width: 100px;">
+    </div>
+    <button class="postition-absolute btn_next_chapter" style="position: absolute; bottom: 3%; right: 3%;">
+      Next Chapter<span> ></span>
+    </button>
+  </div>
+
+  <!-- ------------------------------------------------------------------------------------------------------------- -->
+  <!-- Thông tin của người chơi  -->
+  <div id="player" class="d-flex justify-content-end align-items-center p-5 pe-3 position-absolute bg-dark rounded-3"
+    style="right: 0 ; top: 0; width: fit-content; height: 15%;">
+    <ul id="info_player" class="list-unstyled">
+      <li class="fw-bold">
+        <p class="text-white me-5">Lương Hoàng Long</p>
+      </li>
+      <li>
+        <ul class="list-unstyled d-flex justify-content-between">
+          <li class="text-white d-flex align-items-center"><img width="30px" class="me-1"
+              src="../img/amount_crypto_player.png" alt=""> 0</li>
+          <li class="text-white d-flex align-items-center"><img width="30px" class="me-1" src="../img/medal.png" alt="">
+            0</li>
+          <li class="text-white d-flex align-items-center"><img width="30px" class="me-1" src="../img/compass.png"
+              alt=""> 0</li>
+        </ul>
+      </li>
+    </ul>
+    <img id="avatar_player" width="90px" class="img-thumbnail ms-5" style="background-color: rgba(255, 255, 255, 0.6);"
+      src="../img/treasure.png" alt="">
+  </div>
+
+  <!-- ------------------------------------------------------------------------------------------------------------- -->
+  <!-- Sidebar , các nút chức năng  -->
+  <ul id="func_sidebar" class="d-flex flex-column list-unstyled" style="position: fixed; top: 10%; left: 2%; ">
+    <li class="mb-5" style="width: fit-content;" id="button_store"><img src="../img/store.png" alt=""></li>
+    <li class="mb-5" style="width: fit-content;" id="button_bag"><img src="../img/bag.png" alt=""></li>
+    <li class="mb-5" style="width: fit-content;" id="button_chapter"><img src="../img/chapter.png" alt=""></li>
+    <li class="mb-5" style="width: fit-content;" id="button_ranking"><img src="../img/ranking.png" alt=""></li>
+    <li class="mb-5" style="width: fit-content;" id="button_metamask"><img src="../img/metamask.png" alt=""></li>
+    <li class="mb-5" style="width: fit-content;" id="button_setting"><img src="../img/setting.png" alt=""></li>
+  </ul>
+
+  <!-- ------------------------------------------------------------------------------------------------------------- -->
+  <!-- Các chức năng sidebar  -->
+  <!-- Chợ  -->
+  <aside id="aside_market" class="aside_function">
+    <button class="esc_aside bg-transparent border-0 text-white" style="position: absolute; right: 3%; top: 3%;">
+      <i class="fa-solid fa-xl fa-xmark"></i>
+    </button>
+
+    <div class="title_aside position-absolute d-flex justify-content-between align-items-center"
+      style="top: 3%; left: 3%;">
+      <img style="width: 40px;" src="../img/store.png" alt="">
+      <h4 class="text-white m-0 ms-3" style="line-height: 40px;">Market Place</span></h4>
+    </div>
+    <!-- *** -->
+
+  </aside>
+
+  <!-- Túi đồ -->
+  <aside id="aside_bag" class="aside_function">
+    <button class="esc_aside bg-transparent border-0 text-white" style="position: absolute; right: 3%; top: 3%;">
+      <i class="fa-solid fa-xl fa-xmark"></i>
+    </button>
+    <div class="title_aside position-absolute d-flex justify-content-between align-items-center"
+      style="top: 3%; left: 3%;">
+      <img style="width: 40px" src="../img/bag.png" alt="">
+      <h4 class="text-white m-0 ms-3">Bag - Slot: <span id="number_items_in_bag">0</span></h4>
+    </div>
+    <!-- *** -->
+    <div id="bag" class="w-100 h-100">
+      <table border="1" class="w-100 h-100 rounded-3" style="background-color: rgba(0, 0, 0, 0.2);">
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+      </table>
+    </div>
+  </aside>
+
+  <!-- Các chương -->
+  <aside id="aside_chapter" class="aside_function">
+    <button class="esc_aside bg-transparent border-0 text-white" style="position: absolute; right: 3%; top: 3%;">
+      <i class="fa-solid fa-xl fa-xmark"></i>
+    </button>
+    <div class="title_aside position-absolute d-flex justify-content-between align-items-center"
+      style="top: 3%; left: 3%;">
+      <img style="width: 40px" src="../img/compass.png" alt="">
+      <h4 class="text-white m-0 ms-3" style="line-height: 40px;">Chapter</span></h4>
+    </div>
+    <!-- *** -->
+  </aside>
+
+  <!-- Bảng xếp hạng  -->
+  <aside id="aside_ranking" class="aside_function">
+    <button class="esc_aside bg-transparent border-0 text-white" style="position: absolute; right: 3%; top: 3%;">
+      <i class="fa-solid fa-xl fa-xmark"></i>
+    </button>
+    <div class="title_aside position-absolute d-flex justify-content-between align-items-center"
+      style="top: 3%; left: 3%;">
+      <img style="width: 40px" src="../img/winner.png" alt="">
+      <h4 class="text-white m-0 ms-3" style="line-height: 40px;">Ranking</span></h4>
+    </div>
+    <!-- *** -->
+    <div id="ranking" class="w-100 h-100 d-flex justify-content-center align-items-start">
+      <ul class="list-unstyled d-flex flex-column align-items-center w-100 h-100">
+        <li id="ranking_1st"><img width="40px" src="../img/ranking (1).png" alt=""><img class=" avatar_rank_player"
+            src="../img/medal.png" alt="">
+          <p class="name_rank_player">Player 1</p>
+          <img class="trophies" width="40px" src="../img/winner.png" alt="">
+          <img class="add_friend" src="../img/add-user.png" width="25px" alt="">
+          <img class="info_rank_player" src="../img/info_rank_player.png" width="25px" alt="">
+        </li>
+        <!---->
+        <li id="ranking_2nd"><img width="40px" src="../img/ranking (2).png" alt=""><img class=" avatar_rank_player"
+            src="../img/medal.png" alt="">
+          <p class="name_rank_player">Player 1</p>
+          <img class="trophies" width="40px" src="../img/winner.png" alt="">
+          <img class="add_friend" src="../img/add-user.png" width="25px" alt="">
+          <img class="info_rank_player" src="../img/info_rank_player.png" width="25px" alt="">
+        </li>
+        <!---->
+        <li id="ranking_3rd"><img width="40px" src="../img/ranking (3).png" alt=""><img class=" avatar_rank_player"
+            src="../img/medal.png" alt="">
+          <p class="name_rank_player">Player 1</p>
+          <img class="trophies" width="40px" src="../img/winner.png" alt="">
+          <img class="add_friend" src="../img/add-user.png" width="25px" alt="">
+          <img class="info_rank_player" src="../img/info_rank_player.png" width="25px" alt="">
+        </li>
+        <!---->
+        <li><img src="" width="40px" alt=""><img class=" avatar_rank_player" src="" alt="">
+          <p class="name_rank_player">Player 4</p>
+          <img class="trophies" width="40px" src="" alt="">
+          <img class="add_friend" src="../img/add-user.png" width="25px" alt="">
+          <img class="info_rank_player" src="../img/info_rank_player.png" width="25px" alt="">
+        </li>
+        <!---->
+        <li><img src="" width="40px" alt=""><img class=" avatar_rank_player" src="" alt="">
+          <p class="name_rank_player">Player 4</p>
+          <img class="trophies" width="40px" src="" alt="">
+          <img class="add_friend" src="../img/add-user.png" width="25px" alt="">
+          <img class="info_rank_player" src="../img/info_rank_player.png" width="25px" alt="">
+        </li>
+        <!---->
+        <li><img src="" width="40px" alt=""><img class=" avatar_rank_player" src="" alt="">
+          <p class="name_rank_player">Player 4</p>
+          <img class="trophies" width="40px" src="" alt="">
+          <img class="add_friend" src="../img/add-user.png" width="25px" alt="">
+          <img class="info_rank_player" src="../img/info_rank_player.png" width="25px" alt="">
+        </li>
+        <!---->
+        <li><img src="" width="40px" alt=""><img class=" avatar_rank_player" src="" alt="">
+          <p class="name_rank_player">Player 4</p>
+          <img class="trophies" width="40px" src="" alt="">
+          <img class="add_friend" src="../img/add-user.png" width="25px" alt="">
+          <img class="info_rank_player" src="../img/info_rank_player.png" width="25px" alt="">
+        </li>
+        <!---->
+        <li><img src="" width="40px" alt=""><img class=" avatar_rank_player" src="" alt="">
+          <p class="name_rank_player">Player 4</p>
+          <img class="trophies" width="40px" src="" alt="">
+          <img class="add_friend" src="../img/add-user.png" width="25px" alt="">
+          <img class="info_rank_player" src="../img/info_rank_player.png" width="25px" alt="">
+        </li>
+        <!---->
+        <li><img src="" width="40px" alt=""><img class=" avatar_rank_player" src="" alt="">
+          <p class="name_rank_player">Player 4</p>
+          <img class="trophies" width="40px" src="" alt="">
+          <img class="add_friend" src="../img/add-user.png" width="25px" alt="">
+          <img class="info_rank_player" src="../img/info_rank_player.png" width="25px" alt="">
+        </li>
+        <!---->
+      </ul>
+    </div>
+  </aside>
+
+  <!-- Kết nối ví metamask  -->
+  <aside id="aside_metamask" class="aside_function">
+    <button class="esc_aside bg-transparent border-0 text-white" style="position: absolute; right: 3%; top: 3%;">
+      <i class="fa-solid fa-xl fa-xmark"></i>
+    </button>
+    <div class="title_aside position-absolute d-flex justify-content-between align-items-center"
+      style="top: 3%; left: 3%;">
+      <img style="width: 40px" src="../img/metamask.png" alt="">
+      <h4 class="text-white m-0 ms-3" style="line-height: 40px;">Metamask Wallet</span></h4>
+    </div>
+    <!-- *** -->
+    <div id="metamask" class="w-100 h-100 d-flex justify-content-center align-items-center">
+      <div class="d-flex flex-column justify-content-center align-items-center bg-body-secondary p-5 rounded-4">
+        <h4 id="status_wallet">Connect to Metamask Wallet here !</h4>
+        <p id="loginMetamask" class="p-3 border-0" style="background-color: #353535; border-radius: 50%;"><img
+            id="logo_status_metamask" width="40px" src="../img/metamask.png" alt=""></p>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Setting -->
+  <aside id="aside_setting" class="aside_function">
+    <button class="esc_aside bg-transparent border-0 text-white" style="position: absolute; right: 3%; top: 3%;">
+      <i class="fa-solid fa-xl fa-xmark"></i>
+    </button>
+    <div class="title_aside position-absolute d-flex justify-content-between align-items-center"
+      style="top: 3%; left: 3%;">
+      <img style="width: 40px" src="../img/setting.png" alt="">
+      <h4 class="text-white m-0 ms-3" style="line-height: 40px;">Setting</span></h4>
+    </div>
+
+    <div class=""></div>
+    <div id="music" class="w-25 d-flex justify-content-between align-items-center gy-3">
+      <h4 class="text-white">Music</h4>
+      <label class="switch_toggle_audio">
+        <input onclick="mute_bg_music()" type="checkbox" checked>
+        <span class="slider_button_audio round"></span>
+      </label>
+    </div>
+
+    <div id="sound" class="w-25 d-flex justify-content-between align-items-center gy-3">
+      <h4 class="text-white">Sound</h4>
+      <label class="switch_toggle_audio">
+        <input onclick="mute_sound()" type="checkbox" checked>
+        <span class="slider_button_audio round"></span>
+      </label>
+    </div>
+
+    <div id="game_soundtrack" class="d-none">
+      <!-- <audio id="music_background" src="../audio/music_background/music game.mp3" autoplay loop></audio> -->
+      <audio class="game_sound" id="open_sound" src="../audio/sound/open_sound.mp3"></audio>
+      <audio class="game_sound" id="close_sound" src="../audio/sound/close_sound.mp3"></audio>
+    </div>
+
+    <script>
+      function mute_bg_music() {
+        const music_background = document.getElementById('music_background');
+        // Phát âm thanh
+        if (music_background.paused) {
+          music_background.play();
+        } else {
+          music_background.currentTime = 0; // Đặt thời gian về đầu khi bật lại âm thanh
+          music_background.pause();
+        }
+      }
+
+      function mute_sound() {
+        const game_sound = document.querySelectorAll('.game_sound');
+
+        game_sound.forEach( sound => {
+          if (sound.muted) {
+            sound.muted = false;
+          } else {
+            sound.muted = true;
+          }
+        });
+      }
+    </script>
+  </aside>
+</body>
+
+</html>
